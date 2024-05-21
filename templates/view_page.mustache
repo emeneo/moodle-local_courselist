@@ -1,0 +1,90 @@
+<h2>{{name}}</h2>
+<div style="margin-bottom: 15px;">{{{summary}}}</div>
+<div style="margin:0 0 15px 0;"><input type="text" id="searchbox" size="30" placeholder="search" class="form-control withclear rounded"></div>
+<div>
+    {{#fields}}
+     <a href="{{gourl}}&fid={{id}}" class="study-box" id="field_{{id}}" title="{{name}}" style="width:{{fieldboxwidth}}px;">{{name}}</a>
+    {{/fields}}
+</div>
+<input type="hidden" id="current_fid" value="{{fid}}">
+<input type="hidden" id="searchurl" value="{{searchurl}}">
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
+<div style="margin: 20px 0 20px 0;min-height:fit-content;" id="field_desc">{{{description}}}</div>
+<div class="courses">
+{{#courses}}
+        <div class="coursebox">
+            <div style="position: relative;">
+                <div style="float: left;width:70%;"><h3 class="coursename"><i class="icon fa fa-chevron-right" style="cursor:pointer;" cid="{{id}}"></i><a class="aalink" href="{{courseurl}}?id={{id}}"><strong>{{fullname}}</strong></a><span style="margin:0 5px 0 10px;"><strong>{{enrolseats}}</strong></span><span id="load_{{id}}"></span></h3></div>
+                <div style="float: right;margin-right:15px;"><a href="{{enrolurl}}?id={{id}}"><strong>{{btnEnroll}}</strong></a></div>
+            </div>
+            <div class="content" style="display:none;" id="content_{{id}}">
+                <div class="d-flex">
+                    <div class="flex-grow-1">
+                        <div class="summary">
+                            <div class="no-overflow">
+                                <p dir="ltr" style="text-align: left;">{{{summary}}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="show_{{id}}" value="0">
+    {{/courses}}
+    </div>
+
+{{#js}}
+    var current_fid = document.getElementById('current_fid').value;
+    if(current_fid != ''){
+        document.getElementById('field_'+current_fid).style.backgroundColor = "#ccc";
+    }
+
+    function getRandomInt(min, max) {  
+        min = Math.ceil(min);  
+        max = Math.floor(max);  
+        return Math.floor(Math.random() * (max - min + 1)) + min;  
+    } 
+    
+    //window.onload = function() {
+        var domNodes = document.querySelectorAll('.coursebox .icon');
+        domNodes.forEach(function(node) {  
+                node.addEventListener('click', function(event) {  
+                    var id = event.target.getAttribute('cid');
+                    if(event.target.getAttribute('class') == 'icon fa fa-chevron-right'){
+                        event.target.setAttribute('class','icon fa fa-chevron-down');
+                        if(document.getElementById('show_'+id).value == 0){
+                            document.getElementById('load_'+id).innerHTML = "<img src='loading_small.gif'>";
+                            setTimeout(function() {  
+                                document.getElementById('content_'+id).style.display = "block";
+                                document.getElementById('load_'+id).innerHTML = "";
+                            }, getRandomInt(200,1000));
+                            document.getElementById('show_'+id).value = 1;
+                        }else{
+                            document.getElementById('content_'+id).style.display = "block";
+                        }
+                    }else{
+                        event.target.setAttribute('class','icon fa fa-chevron-right');
+                        document.getElementById('content_'+id).style.display = "none";
+                    }
+            });
+        });
+
+        document.getElementById("searchbox").addEventListener('blur', function() {
+            var key = this.value;
+            if(key != ""){
+                window.location.href = document.getElementById("searchurl").value + "&key="+key;
+            }
+            
+        });
+
+        document.getElementById('searchbox').addEventListener('keypress', function(event) {  
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            var key = this.value;
+            if(key != ""){
+                window.location.href = document.getElementById("searchurl").value + "&key="+key;
+            }
+        }  
+    });
+    //}
+{{/js}}

@@ -1,0 +1,90 @@
+.local_listcoursefiles_menu {
+    width: 100%;
+}
+
+.local_listcoursefiles_menu .local_listcoursefiles_selection {
+    display: inline-table;
+    margin: 0 5px;
+}
+
+.local_listcoursefiles_description {
+    margin: 8px 0;
+}
+
+.local_listcoursefiles_check_uncheck_all {
+    margin-left: 4px;
+}
+
+.local_listcoursefiles_files_actions {
+    margin-top: 25px;
+}
+
+.local_listcoursefiles_files_action {
+    margin-top: 10px;
+}
+
+.local_listcoursefiles_table .c0 {
+    padding-left: 2px;
+    padding-right: 0;
+}
+
+.local_listcoursefiles_file_expired img {
+    width: 12px;
+    height: auto;
+    margin-left: -2px;
+}
+
+.local_listcoursefiles_table .local_listcoursefiles_filecheckbox {
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-left: 0;
+}
+
+.study-box {
+    display: inline-block;
+    padding: 10px 0px;
+    background-color: #fff;
+    border: 1px solid #000;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    margin: 5px;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.study-box:hover {
+    background-color: #f0f0f0;
+}
+
+.study-box:active {
+    background-color: #ccc;
+}
+
+.coursebox {
+    padding: 0.5rem;
+    border: 1px solid #dee2e6;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.coursename {
+    font-size: .9375rem;
+    font-weight: 400;
+    margin: 5px;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

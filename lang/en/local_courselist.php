@@ -1,0 +1,21 @@
+<?php
+$string['pluginname'] = 'Course list';
+$string['manage_course_list'] = 'Manage course list';
+$string['time_period'] = 'Time period';
+$string['description'] = 'Description';
+$string['course_field_categories'] = 'Course field categories';
+$string['startdate'] = 'Start date for course visibility';
+$string['enddate'] = 'End date for course visibility';
+$string['name'] = 'Course list name';
+$string['add_new_list'] = 'Add new list';
+$string['del'] = 'Delete';
+$string['edit'] = 'Edit';
+$string['enroll'] = 'Enroll';
+$string['unlimited'] = 'unlimited';
+$string['free_seats'] = 'Free seats';
+$string['out_of'] = 'out of';
+$string['waitlist_possible'] = 'waitlist possible';
+$string['add_new_courselist'] = 'Add a new courselist';
+$string['edit_courselist'] = 'Edit courselist';
+$string['copy_url'] = 'Copy URL';
+$string['copy_url_tips'] = 'URL copied to clipboard';
