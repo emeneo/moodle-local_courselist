@@ -15,65 +15,82 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * local_cousrse lib.
+ *
+ * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
  */
-function get_custom_field_categories()
-{
+
+/**
+ * get custom field categories
+ */
+function getcustomfieldcategories() {
     global $DB;
     $raws = $DB->get_records('customfield_category', [], '', 'id,name');
     return $raws;
 }
 
-function get_custom_field($cateId)
-{
+/**
+ * get custom field
+ */
+function getcustomfield($cateid) {
     global $DB;
-    $raws = $DB->get_records('customfield_field', ['categoryid' => $cateId], '', 'id,name,shortname,description');
+    $raws = $DB->get_records('customfield_field', ['categoryid' => $cateid], '', 'id,name,shortname,description');
     return $raws;
 }
 
-function get_course_by_custom_field($fieldId)
-{
+/**
+ * get course by custom field
+ */
+function getcoursebycustomfield($fieldid) {
     global $DB;
-    $raws = $DB->get_records_sql("select * from {course} where id in (select instanceid from {customfield_data} where intvalue=1 and fieldid=" . $fieldId . ")");
+    $raws = $DB->get_records_sql("select * from {course} where id in (select instanceid from {customfield_data} where intvalue=1 and fieldid=" . $fieldid . ")");
     return $raws;
 }
 
-function get_free_seats($courseid){
+/**
+ * get free seats
+ */
+function getfreeseats($courseid) {
     global $DB;
-    $seats_summary = '';
-    $enrol = $DB->get_record_sql("select id,enrol,customint3 from {enrol} where courseid=".$courseid." and status=0 order by sortorder asc limit 1");
-    if($enrol){
-        $enrolment = $DB->count_records_sql("select count(id) from {user_enrolments} where enrolid=".$enrol->id);
-        if($enrol->customint3 > 0){
-            $seats_summary = ($enrol->customint3 - $enrolment)." ".get_string('out_of', 'local_courselist')." ".$enrol->customint3;
-            if($enrolment == $enrol->customint3 && $enrol->enrol == "waitlist"){
-                $seats_summary.= ", ".get_string('waitlist_possible', 'local_courselist');
+    $seatssummary = '';
+    $enrol = $DB->get_record_sql("select id,enrol,customint3 from {enrol} where courseid=" . $courseid . " and status=0 order by sortorder asc limit 1");
+    if ($enrol) {
+        $enrolment = $DB->count_records_sql("select count(id) from {user_enrolments} where enrolid=" . $enrol->id);
+        if ($enrol->customint3 > 0) {
+            $seatssummary = ($enrol->customint3 - $enrolment) . " " . get_string('out_of', 'local_courselist') . " " . $enrol->customint3;
+            if ($enrolment == $enrol->customint3 && $enrol->enrol == "waitlist") {
+                $seatssummary .= ", " . get_string('waitlist_possible', 'local_courselist');
             }
-        }else{
-            $seats_summary = get_string('unlimited', 'local_courselist');
+        } else {
+            $seatssummary = get_string('unlimited', 'local_courselist');
         }
     }
-    if(!empty($seats_summary)){
-        $seats_summary = get_string('free_seats', 'local_courselist').": ".$seats_summary;
+    if (!empty($seatssummary)) {
+        $seatssummary = get_string('free_seats', 'local_courselist') . ": " . $seatssummary;
     }
-    return $seats_summary;
+    return $seatssummary;
 }
 
-function get_course_by_key($key,$categoryid){
+/**
+ * get course by key
+ */
+function getcoursebykey($key, $categoryid) {
     global $DB;
-    $raws = $DB->get_records_sql("select instanceid from {customfield_data} where fieldid in (select id from {customfield_field} where categoryid in (".$categoryid.")) group by instanceid");
+    $raws = $DB->get_records_sql("select instanceid from {customfield_data} where fieldid in ".
+    "(select id from {customfield_field} where categoryid in (" . $categoryid . ")) group by instanceid");
     $courseids = [];
-    foreach($raws as $raw){
+    foreach ($raws as $raw) {
         $courseids[] = $raw->instanceid;
     }
-    $courseid = implode(",",$courseids);
-    $raws = $DB->get_records_sql("select * from {course} where id in (".$courseid.") and fullname like '%".$key."%'");
-    foreach($raws as $k=>$raw){
-        $field = $DB->get_records_sql("select fieldid from {customfield_data} where intvalue=1 and instanceid=".$raw->id);
+    $courseid = implode(",", $courseids);
+    $raws = $DB->get_records_sql("select * from {course} where id in (" . $courseid . ") and fullname like '%" . $key . "%'");
+    foreach ($raws as $k => $raw) {
+        $field = $DB->get_records_sql("select fieldid from {customfield_data} where intvalue=1 and instanceid=" . $raw->id);
         $fieldids = [];
-        foreach($field as $f){
+        foreach ($field as $f) {
             $fieldids[] = $f->fieldid;
         }
         $raws[$k]->fieldid = $fieldids;

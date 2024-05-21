@@ -15,13 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * version
+ *
+ * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
  */
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024031305;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2024031306;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2022111800;        // Requires this Moodle version.
 $plugin->component = 'local_courselist';  // Full name of the plugin (used for diagnostics)
 $plugin->maturity  = MATURITY_STABLE;

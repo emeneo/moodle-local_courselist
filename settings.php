@@ -15,6 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * setting
+ *
+ * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
@@ -22,5 +25,9 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($hassiteconfig) { // needs this condition or there is error on login page
-    $ADMIN->add('localplugins', new admin_externalpage('local_courselist_admin_page', get_string('manage_course_list', 'local_courselist'), "$CFG->wwwroot/local/courselist/manage.php", 'moodle/site:config'));
+    $ADMIN->add('localplugins', new admin_externalpage(
+        'local_courselist_admin_page',
+        get_string('manage_course_list', 'local_courselist'),
+        "$CFG->wwwroot/local/courselist/manage.php", 'moodle/site:config')
+    );
 }

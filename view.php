@@ -15,10 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * view
+ *
+ * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
  */
+
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once('lib.php');
 
@@ -28,43 +32,47 @@ $key = optional_param('key', '', PARAM_TEXT);
 require_login();
 $context = context_course::instance(1);
 $PAGE->set_context($context);
-$outputData = new stdClass;
+$outputdata = new stdClass;
 if ($id) {
     $data = $DB->get_record('local_courselist', ['id' => $id]);
-    (isset($data->name))?$outputData->name = $data->name:$outputData->name = "";
-    (isset($data->summary))?$outputData->summary = $data->summary:$outputData->summary = "";
+    (isset($data->name)) ? $outputdata->name = $data->name : $outputdata->name = "";
+    (isset($data->summary)) ? $outputdata->summary = $data->summary : $outputdata->summary = "";
 
 
-    (isset($data->categories))?$usedCategories = explode(",", $data->categories):$usedCategories = [];
+    (isset($data->categories)) ? $usedcategories = explode(",", $data->categories) : $usedcategories = [];
     $i = 0;
     $fields = [];
     $fieldslen = 0;
-    foreach ($usedCategories as $cateId) {
-        $course_fields = get_custom_field($cateId);
-        foreach ($course_fields as $field) {
-            $outputData->fields[$i] = [
+    foreach ($usedcategories as $cateid) {
+        $coursefields = getcustomfield($cateid);
+        foreach ($coursefields as $field) {
+            $outputdata->fields[$i] = [
                 'id' => $field->id,
                 'name' => $field->name,
                 'shortname' => $field->shortname,
                 'description' => $field->description,
             ];
-            $fields[$field->id] = $outputData->fields[$i];
-            if (strlen($field->name) > $fieldslen) $fieldslen = strlen($field->name);
+            $fields[$field->id] = $outputdata->fields[$i];
+            if (strlen($field->name) > $fieldslen) {
+                $fieldslen = strlen($field->name);
+            }
             $i++;
         }
-        if (!$fid && count($outputData->fields) > 0) $fid = $outputData->fields[0]['id'];
+        if (!$fid && count($outputdata->fields) > 0) {
+            $fid = $outputdata->fields[0]['id'];
+        }
     }
-    $outputData->fieldboxwidth = $fieldslen * 9;
+    $outputdata->fieldboxwidth = $fieldslen * 9;
 
     $courses = [];
     if (!empty($key)) {
         $categoryid = [];
-        $rows = get_custom_field_categories();
+        $rows = getcustomfieldcategories();
         foreach ($rows as $row) {
             $categoryid[] = $row->id;
         }
         $categoryids = implode(",", $categoryid);
-        $courses = get_course_by_key($key, $categoryids);
+        $courses = getcoursebykey($key, $categoryids);
         $cid = 0;
         foreach ($courses as $course) {
             $cid = $course->id;
@@ -73,42 +81,40 @@ if ($id) {
         if ($cid) {
             foreach ($courses[$cid]->fieldid as $fid) {
                 if (isset($fields[$fid])) {
-                    $outputData->description = $fields[$fid]['description'];
-                    $outputData->fid = $fid;
+                    $outputdata->description = $fields[$fid]['description'];
+                    $outputdata->fid = $fid;
                     break;
                 }
             }
         }
-    } elseif ($fid) {
-        $courses = get_course_by_custom_field($fid);
-        if(isset($fields[$fid])){
-            $outputData->description = $fields[$fid]['description'];
-            $outputData->fid = $fid;
+    } else if ($fid) {
+        $courses = getcoursebycustomfield($fid);
+        if (isset($fields[$fid])) {
+            $outputdata->description = $fields[$fid]['description'];
+            $outputdata->fid = $fid;
         }
     }
     if (!empty($courses)) {
-        $formatedCourse = [];
+        $formatedcourse = [];
         $i = 0;
         foreach ($courses as $course) {
             $course->startdate = date('Y-m-d H:i:s', $course->startdate);
-            $course->enrolseats = get_free_seats($course->id);
-            $formatedCourse[$i] = $course;
+            $course->enrolseats = getfreeseats($course->id);
+            $formatedcourse[$i] = $course;
             $i++;
         }
-        $outputData->courses = $formatedCourse;
+        $outputdata->courses = $formatedcourse;
     }
-    $outputData->id = $id;
-    $outputData->courseurl = new moodle_url("/course/view.php");
-    $outputData->enrolurl = new moodle_url("/enrol/index.php");
-    $outputData->searchurl = new moodle_url("/local/courselist/view.php?id=" . $id);
+    $outputdata->id = $id;
+    $outputdata->courseurl = new moodle_url("/course/view.php");
+    $outputdata->enrolurl = new moodle_url("/enrol/index.php");
+    $outputdata->searchurl = new moodle_url("/local/courselist/view.php?id=" . $id);
 }
 
 $url = new moodle_url("/local/courselist");
 $PAGE->set_url($url);
 $PAGE->add_body_class('limitedwidth');
-//$PAGE->set_title(get_string('pluginname', 'local_courselist'));
 $output = $PAGE->get_renderer('local_courselist');
 echo $output->header();
-//echo $output->heading($pagetitle);
-echo $output->render_view_page($PAGE, $outputData);
+echo $output->render_view_page($PAGE, $outputdata);
 echo $output->footer();

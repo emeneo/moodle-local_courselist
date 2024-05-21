@@ -15,6 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * lang
+ *
+ * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late

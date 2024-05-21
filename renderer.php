@@ -15,15 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * page renderer
+ *
+ * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
  */
-class local_courselist_renderer extends plugin_renderer_base
-{
 
-    public function render_manage_page($page)
-    {
+ /**
+  * local courselist renderer
+  */
+class local_courselist_renderer extends plugin_renderer_base {
+
+    public function render_manage_page($page) {
         global $DB;
         $data = new stdClass;
         $data->addurl = $page->url . "/edit.php";
@@ -34,7 +39,7 @@ class local_courselist_renderer extends plugin_renderer_base
         $data->btnDel = get_string('del', 'local_courselist');
         $data->btnCopy = get_string('copy_url', 'local_courselist');
         $data->tipsCopy = get_string('copy_url_tips', 'local_courselist');
-        $rows = $DB->get_records('local_courselist', NULL, "", "id,name");
+        $rows = $DB->get_records('local_courselist', null, "", "id,name");
         $i = 0;
         foreach ($rows as $row) {
             @$data->courses[$i]->name = $row->name;
@@ -44,21 +49,20 @@ class local_courselist_renderer extends plugin_renderer_base
         return parent::render_from_template('local_courselist/manage_page', $data);
     }
 
-    public function render_view_page($page, $outputData)
-    {
+    public function render_view_page($page, $outputdata) {
         global $USER;
         $usercontext = context_user::instance($USER->id);
-        $outputData->gourl = $page->url . "/view.php?id=" . $outputData->id;
-        if(isset($outputData->description)){
-            $outputData->description = file_rewrite_pluginfile_urls($outputData->description, 'pluginfile.php', 1, 'core_customfield', 'description', $outputData->fid);
+        $outputdata->gourl = $page->url . "/view.php?id=" . $outputdata->id;
+        if (isset($outputdata->description)) {
+            $outputdata->description = file_rewrite_pluginfile_urls($outputdata->description, 'pluginfile.php', 1, 'core_customfield', 'description', $outputdata->fid);
         }
-        if (!empty($outputData->courses)) {
-            for ($i = 0; $i < count($outputData->courses); $i++) {
-                $context = context_course::instance($outputData->courses[$i]->id);
-                $outputData->courses[$i]->summary = file_rewrite_pluginfile_urls($outputData->courses[$i]->summary, 'pluginfile.php', $context->id, 'course', 'summary', NULL);
+        if (!empty($outputdata->courses)) {
+            for ($i = 0; $i < count($outputdata->courses); $i++) {
+                $context = context_course::instance($outputdata->courses[$i]->id);
+                $outputdata->courses[$i]->summary = file_rewrite_pluginfile_urls($outputdata->courses[$i]->summary, 'pluginfile.php', $context->id, 'course', 'summary', null);
             }
         }
-        $outputData->btnEnroll = get_string('enroll', 'local_courselist');
-        return parent::render_from_template('local_courselist/view_page', $outputData);
+        $outputdata->btnEnroll = get_string('enroll', 'local_courselist');
+        return parent::render_from_template('local_courselist/view_page', $outputdata);
     }
 }

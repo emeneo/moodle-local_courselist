@@ -15,12 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Capabilities
+ *
+ * Defines capablities related to courselist
+ * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
+
 $capabilities = [
-    // Ability to use the plugin.
     'local/courselist:view' => [
         'riskbitmask' => RISK_XSS,
         'captype' => 'write',
@@ -31,3 +37,5 @@ $capabilities = [
         ],
     ],
 ];
+
+

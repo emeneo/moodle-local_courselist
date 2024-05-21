@@ -15,6 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * edit form
+ *
+ * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
@@ -28,16 +31,21 @@ require_once($CFG->libdir . '/completionlib.php');
 /**
  * The form for handling editing a course.
  */
-class local_courselist_edit_form extends moodleform
-{
+class local_courselist_edit_form extends moodleform {
+    /**
+     * @var array
+     */
     protected $courselist;
+
+    /**
+     * @var array
+     */
     protected $context;
 
     /**
      * Form definition.
      */
-    function definition()
-    {
+    public function definition() {
         global $CFG, $PAGE;
 
         $mform    = $this->_form;
@@ -46,7 +54,7 @@ class local_courselist_edit_form extends moodleform
         $courselist    = $this->_customdata['courselist']; // this contains the data of this form
         $editoroptions = $this->_customdata['editoroptions'];
 
-        $custom_field_categories = get_custom_field_categories();
+        $customfieldcategories = getcustomfieldcategories();
 
         $mform->addElement('header', 'time_period', get_string('time_period', 'local_courselist'));
         $mform->addElement('date_selector', 'startdate', get_string('startdate', 'local_courselist'));
@@ -74,17 +82,17 @@ class local_courselist_edit_form extends moodleform
 
         $mform->addElement('header', 'course_field_categories', get_string('course_field_categories', 'local_courselist'));
         if (!empty($courselist->id)) {
-            $usedCategories = explode(",", $courselist->categories);
+            $usedcategories = explode(",", $courselist->categories);
         } else {
-            $usedCategories = [];
+            $usedcategories = [];
         }
-        $cate_counts = 0;
-        foreach ($custom_field_categories as $cate) {
-            $mform->addElement('advcheckbox', 'categories[' . $cate_counts . ']', '', $cate->name, [], [0,$cate->id]);
-            if (in_array($cate->id, $usedCategories)) {
-                $mform->setDefault('categories[' . $cate_counts . ']', $cate->id);
+        $catecounts = 0;
+        foreach ($customfieldcategories as $cate) {
+            $mform->addElement('advcheckbox', 'categories[' . $catecounts . ']', '', $cate->name, [], [0, $cate->id]);
+            if (in_array($cate->id, $usedcategories)) {
+                $mform->setDefault('categories[' . $catecounts . ']', $cate->id);
             }
-            $cate_counts++;
+            $catecounts++;
         }
         if (!empty($courselist->id)) {
             $mform->addElement('hidden', 'id', $courselist->id);

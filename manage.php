@@ -15,10 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * manage
+ *
+ * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
  */
+
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 
@@ -29,12 +33,12 @@ require_login();
 $context = context_system::instance();
 admin_externalpage_setup('managefilters');
 $url = new moodle_url("/local/courselist");
-if($action == 'del'){
+if ($action == 'del') {
     global $DB;
-    if($id){
-        $DB->delete_records('local_courselist',['id' => $id]);
+    if ($id) {
+        $DB->delete_records('local_courselist', ['id' => $id]);
     }
-    redirect($url."/manage.php");
+    redirect($url . "/manage.php");
 }
 $title = get_string('manage_course_list', 'local_courselist');
 $pagetitle = $title;
