@@ -46,19 +46,17 @@
 }
 
 .study-box {
-      display: inline-block;
-    padding: 10px; /*GH: 20240612*/
+    display: inline-block;
+    padding: 10px 0px;
     background-color: #fff;
-    border: 1px solid #dee2e6; /*GH: 20240612*/
-    border-radius: .5rem;  /*GH: 20240612*/
+    border: 1px solid #000;
     font-family: Arial, sans-serif;
-    font-size: .9375rem; /*GH: 20240612*/
-    font-weight: bolder;  /*GH: 20240612*/
+    font-size: 16px;
     text-align: center;
-    margin: 1px; /*GH: 20240612*/
+    margin: 5px;
     box-sizing: border-box;
     text-decoration: none;
-    color: 0f6cbf;
+    color: inherit;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; 

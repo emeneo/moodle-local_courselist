@@ -30,9 +30,11 @@ $id = optional_param('id', 0, PARAM_INT);
 $fid = optional_param('fid', 0, PARAM_INT);
 $key = optional_param('key', '', PARAM_TEXT);
 require_login();
-$context = context_course::instance(1);
+//$context = context_course::instance(1);
+$context = context_system::instance();
 $PAGE->set_context($context);
 $outputdata = new stdClass;
+
 if ($id) {
     $data = $DB->get_record('local_courselist', ['id' => $id]);
     (isset($data->name)) ? $outputdata->name = $data->name : $outputdata->name = "";
@@ -45,25 +47,27 @@ if ($id) {
     $fieldslen = 0;
     foreach ($usedcategories as $cateid) {
         $coursefields = getcustomfield($cateid);
+        $outputdata->fields = [];
         foreach ($coursefields as $field) {
-            $outputdata->fields[$i] = [
+            $temp = [
                 'id' => $field->id,
                 'name' => $field->name,
                 'shortname' => $field->shortname,
                 'description' => $field->description,
             ];
-            $fields[$field->id] = $outputdata->fields[$i];
+            $outputdata->fields[] = $temp;
+
+            $fields[$field->id] = $temp;
             if (strlen($field->name) > $fieldslen) {
                 $fieldslen = strlen($field->name);
             }
             $i++;
         }
-        if (!$fid && count($outputdata->fields) > 0) {
-            $fid = $outputdata->fields[0]['id'];
-        }
+    }
+    if (!$fid && count($outputdata->fields) > 0) {
+        $fid = $outputdata->fields[0]['id'];
     }
     $outputdata->fieldboxwidth = $fieldslen * 9;
-
     $courses = [];
     if (!empty($key)) {
         $categoryid = [];
@@ -98,10 +102,15 @@ if ($id) {
         $formatedcourse = [];
         $i = 0;
         foreach ($courses as $course) {
-            $course->startdate = date('Y-m-d H:i:s', $course->startdate);
-            $course->enrolseats = getfreeseats($course->id);
-            $formatedcourse[$i] = $course;
-            $i++;
+            if($course->startdate > $data->startdate && $course->startdate < $data->enddate){
+                $course->startdate = date('Y-m-d H:i:s', $course->startdate);
+                $course->startdatelite = userdate(strtotime($course->startdate), '%d %B %Y');
+                $course->startdatelabel = get_string('startdate_lable', 'local_courselist') . ": ";
+                $course->enrolseatslabel = get_string('free_seats', 'local_courselist') . ": ";
+                $course->enrolseats = getfreeseats($course->id);
+                $formatedcourse[$i] = $course;
+                $i++;
+            }
         }
         $outputdata->courses = $formatedcourse;
     }
@@ -110,7 +119,6 @@ if ($id) {
     $outputdata->enrolurl = new moodle_url("/enrol/index.php");
     $outputdata->searchurl = new moodle_url("/local/courselist/view.php?id=" . $id);
 }
-
 $url = new moodle_url("/local/courselist");
 $PAGE->set_url($url);
 $PAGE->add_body_class('limitedwidth');

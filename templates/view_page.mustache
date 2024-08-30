@@ -9,12 +9,12 @@
 <input type="hidden" id="current_fid" value="{{fid}}">
 <input type="hidden" id="searchurl" value="{{searchurl}}">
 <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-<div style="margin: 20px 0 20px 0;min-height:fit-content;" id="field_desc">{{{description}}}</div>
+<div style="margin: 20px 0 20px 0;" id="field_desc">{{{description}}}</div>
 <div class="courses">
 {{#courses}}
         <div class="coursebox">
             <div style="position: relative;">
-                <div style="float: left;width:70%;"><h3 class="coursename"><i class="icon fa fa-chevron-right" style="cursor:pointer;" cid="{{id}}"></i><a class="aalink" href="{{courseurl}}?id={{id}}"><strong>{{fullname}}</strong></a><span style="margin:0 5px 0 10px;"><strong>{{enrolseats}}</strong></span><span id="load_{{id}}"></span></h3></div>
+                <div style="float: left;width:70%;"><h3 class="coursename"><i class="icon fa fa-chevron-right" style="cursor:pointer;" cid="{{id}}"></i><a class="aalink" href="{{courseurl}}?id={{id}}"><strong>{{fullname}}</strong></a><span style="margin:0 5px 0 10px;"><strong>{{startdatelabel}}</strong>{{startdatelite}}&nbsp;&nbsp;<strong>{{enrolseatslabel}}</strong>{{enrolseats}}</span><span id="load_{{id}}"></span></h3></div>
                 <div style="float: right;margin-right:15px;"><a href="{{enrolurl}}?id={{id}}"><strong>{{btnEnroll}}</strong></a></div>
             </div>
             <div class="content" style="display:none;" id="content_{{id}}">
@@ -87,4 +87,13 @@
         }  
     });
     //}
+
+    window.addEventListener('DOMContentLoaded', function() {  
+    var contentDiv = document.getElementById('field_desc');  
+    var contentHeight = contentDiv.offsetHeight;  
+    var minHeightThreshold = 50;
+    if (contentHeight < minHeightThreshold) {  
+        contentDiv.style.minHeight = minHeightThreshold + 'px';  
+    }  
+});
 {{/js}}

@@ -42,8 +42,10 @@ class local_courselist_renderer extends plugin_renderer_base {
         $rows = $DB->get_records('local_courselist', null, "", "id,name");
         $i = 0;
         foreach ($rows as $row) {
-            @$data->courses[$i]->name = $row->name;
-            @$data->courses[$i]->id = $row->id;
+            $data->courses[$i] = [
+                'name' => $row->name,
+                'id' => $row->id
+            ];
             $i++;
         }
         return parent::render_from_template('local_courselist/manage_page', $data);

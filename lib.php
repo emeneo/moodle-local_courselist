@@ -37,7 +37,7 @@ function getcustomfieldcategories() {
  */
 function getcustomfield($cateid) {
     global $DB;
-    $raws = $DB->get_records('customfield_field', ['categoryid' => $cateid], '', 'id,name,shortname,description');
+    $raws = $DB->get_records('customfield_field', ['categoryid' => $cateid], 'sortorder ASC', 'id,name,shortname,description');
     return $raws;
 }
 
@@ -46,7 +46,7 @@ function getcustomfield($cateid) {
  */
 function getcoursebycustomfield($fieldid) {
     global $DB;
-    $raws = $DB->get_records_sql("select * from {course} where id in (select instanceid from {customfield_data} where intvalue=1 and fieldid=" . $fieldid . ")");
+    $raws = $DB->get_records_sql("select * from {course} where id in (select instanceid from {customfield_data} where intvalue=1 and fieldid=" . $fieldid . ") order by fullname asc");
     return $raws;
 }
 
@@ -67,9 +67,6 @@ function getfreeseats($courseid) {
         } else {
             $seatssummary = get_string('unlimited', 'local_courselist');
         }
-    }
-    if (!empty($seatssummary)) {
-        $seatssummary = get_string('free_seats', 'local_courselist') . ": " . $seatssummary;
     }
     return $seatssummary;
 }
