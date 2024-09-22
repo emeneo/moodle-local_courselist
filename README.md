@@ -19,7 +19,7 @@ URL: /course/customfield.php
 Repeat for all categories needed. 
   
 (4) Create new course list page (Admin)
-1.	First go to Site Administration  Plugins  Local Plugins  Manage course list
+1.	First go to Site Administration -> Plugins -> Local Plugins -> Manage course list
         /local/courselist/manage.php)
 2.	Click on “Add new list”
  
