@@ -28,4 +28,4 @@ $plugin->version   = 2024090400;        // The current plugin version (Date: YYY
 $plugin->requires  = 2022111800;        // Requires this Moodle version.
 $plugin->component = 'local_courselist';  // Full name of the plugin (used for diagnostics)
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = "1.0.0";
+$plugin->release   = "Courselist plugin Version 4.4-a";
