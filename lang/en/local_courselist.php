@@ -43,3 +43,5 @@ $string['edit_courselist'] = 'Edit courselist';
 $string['copy_url'] = 'Copy URL';
 $string['copy_url_tips'] = 'URL copied to clipboard';
 $string['startdate_lable'] = 'Start';
+$string['menuname'] = 'Courselist';
+$string['add'] = 'Add';

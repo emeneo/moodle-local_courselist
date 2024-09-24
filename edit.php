@@ -46,10 +46,10 @@ $catcontext = context_user::instance($USER->id);
 $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes' => $CFG->maxbytes, 'trusttext' => false, 'noclean' => true);
 $args['editoroptions'] = $editoroptions;
 if ($id) {
-    $title = "Edit";
+    $title = get_string('edit', 'local_courselist');
     $args['courselist'] = $DB->get_record('local_courselist', ['id' => $id]);
 } else {
-    $title = "Add";
+    $title =  get_string('add', 'local_courselist');
     $args['courselist'] = [];
 }
 $returnurl = new moodle_url($CFG->wwwroot . '/local/courselist/manage.php');

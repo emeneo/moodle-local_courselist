@@ -96,4 +96,13 @@
         contentDiv.style.minHeight = minHeightThreshold + 'px';  
     }  
 });
+
+const navItems = document.querySelectorAll('.nav-item');
+navItems.forEach(element => {
+    if(element.querySelector('a').title == 'courselist'){
+        element.querySelector('a').classList.add('active');
+    }else{
+        element.querySelector('a').classList.remove('active');
+    }
+});
 {{/js}}
