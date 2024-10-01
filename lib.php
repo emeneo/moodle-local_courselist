@@ -46,8 +46,9 @@ function getcustomfield($cateid) {
  */
 function getcoursebycustomfield($fieldid) {
     global $DB;
-    $raws = $DB->get_records_sql("select * from {course} where id in (select instanceid from {customfield_data} where intvalue=1 and fieldid=" . $fieldid . ") order by fullname asc");
-    return $raws;
+    $subquery = $DB->get_records_sql('SELECT instanceid FROM {customfield_data} WHERE intvalue = 1 AND fieldid =?', [$fieldid]);
+    $instanceids = array_keys($subquery);
+    return $DB->get_records_list('course', 'id', $instanceids, 'fullname ASC');
 }
 
 /**
@@ -56,9 +57,9 @@ function getcoursebycustomfield($fieldid) {
 function getfreeseats($courseid) {
     global $DB;
     $seatssummary = '';
-    $enrol = $DB->get_record_sql("select id,enrol,customint3 from {enrol} where courseid=" . $courseid . " and status=0 order by sortorder asc limit 1");
+    $enrol = $DB->get_record_sql('SELECT id, enrol, customint3 FROM {enrol} WHERE courseid =? AND status = 0 ORDER BY sortorder ASC LIMIT 1', [$courseid]);
     if ($enrol) {
-        $enrolment = $DB->count_records_sql("select count(id) from {user_enrolments} where enrolid=" . $enrol->id);
+        $enrolment = $DB->count_records('user_enrolments', ['enrolid' => $enrol->id]);
         if ($enrol->customint3 > 0) {
             $seatssummary = ($enrol->customint3 - $enrolment) . " " . get_string('out_of', 'local_courselist') . " " . $enrol->customint3;
             if ($enrolment == $enrol->customint3 && $enrol->enrol == "waitlist") {
@@ -76,16 +77,17 @@ function getfreeseats($courseid) {
  */
 function getcoursebykey($key, $categoryid) {
     global $DB;
-    $raws = $DB->get_records_sql("select instanceid from {customfield_data} where fieldid in ".
-    "(select id from {customfield_field} where categoryid in (" . $categoryid . ")) group by instanceid");
+    $fieldIds = $DB->get_records_sql('SELECT id FROM {customfield_field} WHERE categoryid IN (?)', [$categoryid]);
+    $fieldIdArray = array_keys($fieldIds);
+    $raws = $DB->get_records_sql('SELECT instanceid FROM {customfield_data} WHERE fieldid IN ('.implode(',', $fieldIdArray).') GROUP BY instanceid');
     $courseids = [];
     foreach ($raws as $raw) {
         $courseids[] = $raw->instanceid;
     }
     $courseid = implode(",", $courseids);
-    $raws = $DB->get_records_sql("select * from {course} where id in (" . $courseid . ") and fullname like '%" . $key . "%'");
+    $raws = $DB->get_records_select('course', "id IN ($courseid) AND fullname LIKE?", ['%'.$key.'%']);
     foreach ($raws as $k => $raw) {
-        $field = $DB->get_records_sql("select fieldid from {customfield_data} where intvalue=1 and instanceid=" . $raw->id);
+        $field = $DB->get_records_sql('SELECT fieldid FROM {customfield_data} WHERE intvalue = 1 AND instanceid =?', [$raw->id]);
         $fieldids = [];
         foreach ($field as $f) {
             $fieldids[] = $f->fieldid;
