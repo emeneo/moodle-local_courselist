@@ -1,40 +1,40 @@
-.local_listcoursefiles_menu {
+.local_courselist_menu {
     width: 100%;
 }
 
-.local_listcoursefiles_menu .local_listcoursefiles_selection {
+.local_courselist_menu .local_courselist_selection {
     display: inline-table;
     margin: 0 5px;
 }
 
-.local_listcoursefiles_description {
+.local_courselist_description {
     margin: 8px 0;
 }
 
-.local_listcoursefiles_check_uncheck_all {
+.local_courselist_check_uncheck_all {
     margin-left: 4px;
 }
 
-.local_listcoursefiles_files_actions {
+.local_courselist_files_actions {
     margin-top: 25px;
 }
 
-.local_listcoursefiles_files_action {
+.local_courselist_files_action {
     margin-top: 10px;
 }
 
-.local_listcoursefiles_table .c0 {
+.local_courselist_table .c0 {
     padding-left: 2px;
     padding-right: 0;
 }
 
-.local_listcoursefiles_file_expired img {
+.local_courselist_file_expired img {
     width: 12px;
     height: auto;
     margin-left: -2px;
 }
 
-.local_listcoursefiles_table .local_listcoursefiles_filecheckbox {
+.local_courselist_table .local_courselist_filecheckbox {
     margin: 0;
 }
 

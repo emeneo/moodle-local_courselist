@@ -1,10 +1,10 @@
-<div class="local_courselist_menu" style="margin:10px 0 10px 0;">
-    <div class="local_courselist_selection">
+<div class="local_listcoursefiles_menu" style="margin:10px 0 10px 0;">
+    <div class="local_listcoursefiles_selection">
         [<a href="{{addurl}}"><strong>{{btnAdd}}</strong></a>]
     </div>
 </div>
 <div class="hero-unit">
-  <table class="local_courselist_table generaltable">
+  <table class="local_listcoursefiles_table generaltable">
   {{#courses}}
     <tr>
       <td class="cell c1" style="text-align:left;">
