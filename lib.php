@@ -26,7 +26,7 @@
 /**
  * get custom field categories
  */
-function getcustomfieldcategories() {
+function local_courselist_getcustomfieldcategories() {
     global $DB;
     $raws = $DB->get_records('customfield_category', [], '', 'id,name');
     return $raws;
@@ -35,7 +35,7 @@ function getcustomfieldcategories() {
 /**
  * get custom field
  */
-function getcustomfield($cateid) {
+function local_courselist_getcustomfield($cateid) {
     global $DB;
     $raws = $DB->get_records('customfield_field', ['categoryid' => $cateid], 'sortorder ASC', 'id,name,shortname,description');
     return $raws;
@@ -44,7 +44,7 @@ function getcustomfield($cateid) {
 /**
  * get course by custom field
  */
-function getcoursebycustomfield($fieldid) {
+function local_courselist_getcoursebycustomfield($fieldid) {
     global $DB;
     $subquery = $DB->get_records_sql('SELECT instanceid FROM {customfield_data} WHERE intvalue = 1 AND fieldid =?', [$fieldid]);
     $instanceids = array_keys($subquery);
@@ -54,7 +54,7 @@ function getcoursebycustomfield($fieldid) {
 /**
  * get free seats
  */
-function getfreeseats($courseid) {
+function local_courselist_getfreeseats($courseid) {
     global $DB;
     $seatssummary = '';
     $enrol = $DB->get_record_sql('SELECT id, enrol, customint3 FROM {enrol} WHERE courseid =? AND status = 0 ORDER BY sortorder ASC LIMIT 1', [$courseid]);
@@ -75,7 +75,7 @@ function getfreeseats($courseid) {
 /**
  * get course by key
  */
-function getcoursebykey($key, $categoryid) {
+function local_courselist_getcoursebykey($key, $categoryid) {
     global $DB;
     $fieldIds = $DB->get_records_sql('SELECT id FROM {customfield_field} WHERE categoryid IN (?)', [$categoryid]);
     $fieldIdArray = array_keys($fieldIds);

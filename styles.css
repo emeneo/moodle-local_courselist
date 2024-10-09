@@ -38,14 +38,7 @@
     margin: 0;
 }
 
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    margin-left: 0;
-}
-
-.study-box {
+.local_courselist_study-box {
       display: inline-block;
     padding: 10px; /*GH: 20240612*/
     background-color: #fff;
@@ -64,22 +57,24 @@
     text-overflow: ellipsis; 
 }
 
-.study-box:hover {
+.local_courselist_study-box:hover {
     background-color: #f0f0f0;
 }
 
-.study-box:active {
+.local_courselist_study-box:active {
     background-color: #ccc;
 }
 
-.coursebox {
+.local_courselist_coursebox {
     padding: 0.5rem;
     border: 1px solid #dee2e6;
     margin-bottom: 0.5rem;
     border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
 }
 
-.coursename {
+.local_courselist_coursename {
     font-size: .9375rem;
     font-weight: 400;
     margin: 5px;

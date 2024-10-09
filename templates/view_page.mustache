@@ -3,7 +3,7 @@
 <div style="margin:0 0 15px 0;"><input type="text" id="searchbox" size="30" placeholder="search" class="form-control withclear rounded"></div>
 <div>
     {{#fields}}
-     <a href="{{gourl}}&fid={{id}}" class="study-box" id="field_{{id}}" title="{{name}}" style="width:{{fieldboxwidth}}px;">{{name}}</a>
+     <a href="{{gourl}}&fid={{id}}" class="local_courselist_study-box" id="field_{{id}}" title="{{name}}" style="width:{{fieldboxwidth}}px;">{{name}}</a>
     {{/fields}}
 </div>
 <input type="hidden" id="current_fid" value="{{fid}}">
@@ -12,9 +12,9 @@
 <div style="margin: 20px 0 20px 0;" id="field_desc">{{{description}}}</div>
 <div class="courses">
 {{#courses}}
-        <div class="coursebox">
+        <div class="local_courselist_coursebox">
             <div style="position: relative;">
-                <div style="float: left;width:70%;"><h3 class="coursename"><i class="icon fa fa-chevron-right" style="cursor:pointer;" cid="{{id}}"></i><a class="aalink" href="{{courseurl}}?id={{id}}"><strong>{{fullname}}</strong></a><span style="margin:0 5px 0 10px;"><strong>{{startdatelabel}}</strong>{{startdatelite}}&nbsp;&nbsp;<strong>{{enrolseatslabel}}</strong>{{enrolseats}}</span><span id="load_{{id}}"></span></h3></div>
+                <div style="float: left;width:70%;"><h3 class="local_courselist_coursename"><i class="icon fa fa-chevron-right" style="cursor:pointer;" cid="{{id}}"></i><a class="aalink" href="{{courseurl}}?id={{id}}"><strong>{{fullname}}</strong></a><span style="margin:0 5px 0 10px;"><strong>{{startdatelabel}}</strong>{{startdatelite}}&nbsp;&nbsp;<strong>{{enrolseatslabel}}</strong>{{enrolseats}}</span><span id="load_{{id}}"></span></h3></div>
                 <div style="float: right;margin-right:15px;"><a href="{{enrolurl}}?id={{id}}"><strong>{{btnEnroll}}</strong></a></div>
             </div>
             <div class="content" style="display:none;" id="content_{{id}}">
@@ -46,7 +46,7 @@
     } 
     
     //window.onload = function() {
-        var domNodes = document.querySelectorAll('.coursebox .icon');
+        var domNodes = document.querySelectorAll('.local_courselist_coursebox .icon');
         domNodes.forEach(function(node) {  
                 node.addEventListener('click', function(event) {  
                     var id = event.target.getAttribute('cid');

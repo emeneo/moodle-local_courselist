@@ -46,7 +46,7 @@ if ($id) {
     $fields = [];
     $fieldslen = 0;
     foreach ($usedcategories as $cateid) {
-        $coursefields = getcustomfield($cateid);
+        $coursefields = local_courselist_getcustomfield($cateid);
         $outputdata->fields = [];
         foreach ($coursefields as $field) {
             $temp = [
@@ -71,12 +71,12 @@ if ($id) {
     $courses = [];
     if (!empty($key)) {
         $categoryid = [];
-        $rows = getcustomfieldcategories();
+        $rows = local_courselist_getcustomfieldcategories();
         foreach ($rows as $row) {
             $categoryid[] = $row->id;
         }
         $categoryids = implode(",", $categoryid);
-        $courses = getcoursebykey($key, $categoryids);
+        $courses = local_courselist_getcoursebykey($key, $categoryids);
         $cid = 0;
         foreach ($courses as $course) {
             $cid = $course->id;
@@ -92,7 +92,7 @@ if ($id) {
             }
         }
     } else if ($fid) {
-        $courses = getcoursebycustomfield($fid);
+        $courses = local_courselist_getcoursebycustomfield($fid);
         if (isset($fields[$fid])) {
             $outputdata->description = $fields[$fid]['description'];
             $outputdata->fid = $fid;
@@ -107,7 +107,7 @@ if ($id) {
                 $course->startdatelite = userdate(strtotime($course->startdate), '%d %B %Y');
                 $course->startdatelabel = get_string('startdate_lable', 'local_courselist') . ": ";
                 $course->enrolseatslabel = get_string('free_seats', 'local_courselist') . ": ";
-                $course->enrolseats = getfreeseats($course->id);
+                $course->enrolseats = local_courselist_getfreeseats($course->id);
                 $formatedcourse[$i] = $course;
                 $i++;
             }

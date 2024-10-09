@@ -54,7 +54,7 @@ class local_courselist_edit_form extends moodleform {
         $courselist    = $this->_customdata['courselist']; // this contains the data of this form
         $editoroptions = $this->_customdata['editoroptions'];
 
-        $customfieldcategories = getcustomfieldcategories();
+        $customfieldcategories = local_courselist_getcustomfieldcategories();
 
         $mform->addElement('header', 'time_period', get_string('time_period', 'local_courselist'));
         $mform->addElement('date_selector', 'startdate', get_string('startdate', 'local_courselist'));
