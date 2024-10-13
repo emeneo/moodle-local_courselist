@@ -34,6 +34,7 @@ $id = optional_param('id', 0, PARAM_INT);
 require_login();
 admin_externalpage_setup('managefilters');
 $context = context_system::instance();
+require_capability ('local/courselist:manage', $context);
 $pageparams = [];
 if ($id) {
     $pageparams['id'] = $id;

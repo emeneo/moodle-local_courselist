@@ -26,7 +26,8 @@
 /**
  * get custom field categories
  */
-function local_courselist_getcustomfieldcategories() {
+function local_courselist_getcustomfieldcategories()
+{
     global $DB;
     $raws = $DB->get_records('customfield_category', [], '', 'id,name');
     return $raws;
@@ -35,7 +36,8 @@ function local_courselist_getcustomfieldcategories() {
 /**
  * get custom field
  */
-function local_courselist_getcustomfield($cateid) {
+function local_courselist_getcustomfield($cateid)
+{
     global $DB;
     $raws = $DB->get_records('customfield_field', ['categoryid' => $cateid], 'sortorder ASC', 'id,name,shortname,description');
     return $raws;
@@ -44,9 +46,14 @@ function local_courselist_getcustomfield($cateid) {
 /**
  * get course by custom field
  */
-function local_courselist_getcoursebycustomfield($fieldid) {
+function local_courselist_getcoursebycustomfield($fieldid)
+{
     global $DB;
-    $subquery = $DB->get_records_sql('SELECT instanceid FROM {customfield_data} WHERE intvalue = 1 AND fieldid =?', [$fieldid]);
+    $sql = "SELECT instanceid 
+            FROM {customfield_data} 
+            WHERE intvalue = 1 
+                AND fieldid = :fieldid";
+    $subquery = $DB->get_records_sql($sql, ['fieldid' => $fieldid]);
     $instanceids = array_keys($subquery);
     return $DB->get_records_list('course', 'id', $instanceids, 'fullname ASC');
 }
@@ -54,10 +61,16 @@ function local_courselist_getcoursebycustomfield($fieldid) {
 /**
  * get free seats
  */
-function local_courselist_getfreeseats($courseid) {
+function local_courselist_getfreeseats($courseid)
+{
     global $DB;
     $seatssummary = '';
-    $enrol = $DB->get_record_sql('SELECT id, enrol, customint3 FROM {enrol} WHERE courseid =? AND status = 0 ORDER BY sortorder ASC LIMIT 1', [$courseid]);
+    $sql = "SELECT id, enrol, customint3 
+            FROM {enrol} 
+            WHERE courseid = :courseid 
+                AND status = 0 
+                ORDER BY sortorder ASC LIMIT 1";
+    $enrol = $DB->get_record_sql($sql, ["courseid" => $courseid]);
     if ($enrol) {
         $enrolment = $DB->count_records('user_enrolments', ['enrolid' => $enrol->id]);
         if ($enrol->customint3 > 0) {
@@ -75,19 +88,43 @@ function local_courselist_getfreeseats($courseid) {
 /**
  * get course by key
  */
-function local_courselist_getcoursebykey($key, $categoryid) {
+function local_courselist_getcoursebykey($key, $categoryid)
+{
     global $DB;
-    $fieldIds = $DB->get_records_sql('SELECT id FROM {customfield_field} WHERE categoryid IN (?)', [$categoryid]);
+    [$insql, $inparams] = $DB->get_in_or_equal($categoryid);
+    $sql = "SELECT * FROM {customfield_field} 
+            WHERE categoryid $insql";
+    $fieldIds = $DB->get_records_sql($sql, $inparams);
     $fieldIdArray = array_keys($fieldIds);
-    $raws = $DB->get_records_sql('SELECT instanceid FROM {customfield_data} WHERE fieldid IN ('.implode(',', $fieldIdArray).') GROUP BY instanceid');
+    [$insql, $inparams] = $DB->get_in_or_equal($fieldIdArray);
+    $sql = "SELECT instanceid 
+            FROM {customfield_data} 
+            WHERE fieldid $insql 
+            GROUP BY instanceid";
+    $raws = $DB->get_records_sql($sql, $inparams);
     $courseids = [];
     foreach ($raws as $raw) {
         $courseids[] = $raw->instanceid;
     }
-    $courseid = implode(",", $courseids);
-    $raws = $DB->get_records_select('course', "id IN ($courseid) AND fullname LIKE?", ['%'.$key.'%']);
+    $likeKey = $DB->sql_like('fullname', ':key');
+    $raws = $DB->get_records_sql(
+        "SELECT * FROM {course} WHERE {$likeKey}",
+        [
+            'key' => '%' . $key . '%',
+        ]
+    );
+
     foreach ($raws as $k => $raw) {
-        $field = $DB->get_records_sql('SELECT fieldid FROM {customfield_data} WHERE intvalue = 1 AND instanceid =?', [$raw->id]);
+        if(!in_array($raw->id,$courseids)){
+            unset($raws[$k]);
+            continue;
+        }
+        
+        $sql = "SELECT fieldid 
+                FROM {customfield_data} 
+                WHERE intvalue = 1 
+                    AND instanceid = :instanceid";
+        $field = $DB->get_records_sql($sql, ['instanceid' => $raw->id]);
         $fieldids = [];
         foreach ($field as $f) {
             $fieldids[] = $f->fieldid;

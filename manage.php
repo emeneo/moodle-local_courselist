@@ -30,7 +30,12 @@ $action = optional_param('action', '', PARAM_ALPHAEXT);
 $id = optional_param('id', 0, PARAM_INT);
 require_login();
 
+if($action){
+    require_sesskey();
+}
+
 $context = context_system::instance();
+require_capability ('local/courselist:manage', $context);
 admin_externalpage_setup('managefilters');
 $url = new moodle_url("/local/courselist");
 if ($action == 'del') {

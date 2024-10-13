@@ -45,3 +45,5 @@ $string['copy_url_tips'] = 'URL copied to clipboard';
 $string['startdate_lable'] = 'Start';
 $string['menuname'] = 'Courselist';
 $string['add'] = 'Add';
+$string['courselist:view'] = ' No permission to view';
+$string['courselist:manage'] = ' No permission';

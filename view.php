@@ -32,6 +32,7 @@ $key = optional_param('key', '', PARAM_TEXT);
 require_login();
 //$context = context_course::instance(1);
 $context = context_system::instance();
+require_capability ('local/courselist:view', $context);
 $PAGE->set_context($context);
 $outputdata = new stdClass;
 

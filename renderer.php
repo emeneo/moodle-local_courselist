@@ -29,10 +29,10 @@
 class local_courselist_renderer extends plugin_renderer_base {
 
     public function render_manage_page($page) {
-        global $DB;
+        global $DB, $USER;
         $data = new stdClass;
-        $data->addurl = $page->url . "/edit.php";
-        $data->delurl = $page->url . "/manage.php?action=del";
+        $data->addurl = $page->url . "/edit.php?sesskey=".$USER->sesskey;
+        $data->delurl = $page->url . "/manage.php?sesskey=".$USER->sesskey."&action=del";
         $data->viewurl = $page->url . "/view.php";
         $data->btnAdd = get_string('add_new_list', 'local_courselist');
         $data->btnEdit = get_string('edit', 'local_courselist');
