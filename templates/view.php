@@ -103,6 +103,7 @@ if ($id) {
         $formatedcourse = [];
         $i = 0;
         foreach ($courses as $course) {
+            echo $course->startdate .">". $data->startdate .'&&'. $course->startdate .'<'. $data->enddate."\n";
             if($course->startdate > $data->startdate && $course->startdate < $data->enddate && $data->enddate > $data->startdate){
                 $course->startdate = date('Y-m-d H:i:s', $course->startdate);
                 $course->startdatelite = userdate(strtotime($course->startdate), '%d %B %Y');
@@ -114,6 +115,7 @@ if ($id) {
             }
         }
         $outputdata->courses = $formatedcourse;
+        exit;
     }
     $outputdata->id = $id;
     $outputdata->courseurl = new moodle_url("/course/view.php");

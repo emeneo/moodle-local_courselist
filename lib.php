@@ -106,6 +106,7 @@ function local_courselist_getcoursebykey($key, $categoryid)
     foreach ($raws as $raw) {
         $courseids[] = $raw->instanceid;
     }
+    /*
     $likeKey = $DB->sql_like('fullname', ':key');
     $raws = $DB->get_records_sql(
         "SELECT * FROM {course} WHERE {$likeKey}",
@@ -113,13 +114,14 @@ function local_courselist_getcoursebykey($key, $categoryid)
             'key' => '%' . $key . '%',
         ]
     );
-
+    */
+    $raws = $DB->get_records_sql("SELECT * FROM {course} WHERE fullname like '%" . $key . "%'");
     foreach ($raws as $k => $raw) {
-        if(!in_array($raw->id,$courseids)){
+        if (!in_array($raw->id, $courseids)) {
             unset($raws[$k]);
             continue;
         }
-        
+
         $sql = "SELECT fieldid 
                 FROM {customfield_data} 
                 WHERE intvalue = 1 

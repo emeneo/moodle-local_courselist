@@ -32,7 +32,7 @@ function xmldb_local_courselist_upgrade($oldversion) {
     $dbman = $DB->get_manager(); // Returns database manager instance.
 
     // Check if upgrading to a version that includes new capabilities.
-    if ($oldversion < 2024101107) { // Replace with your new version number.
+    if ($oldversion < 2024101109) { // Replace with your new version number.
         // Define the capability.
         $capability = 'local/courselist:view';
 
@@ -70,6 +70,6 @@ function xmldb_local_courselist_upgrade($oldversion) {
         }
         */
         // Mark the plugin as upgraded to the new version.
-        upgrade_plugin_savepoint(true, 2024101107, 'local', 'courselist');
+        upgrade_plugin_savepoint(true, 2024101109, 'local', 'courselist');
     }
 }
