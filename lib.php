@@ -92,14 +92,18 @@ function local_courselist_getcoursebykey($key, $categoryid)
 {
     global $DB;
     [$insql, $inparams] = $DB->get_in_or_equal($categoryid);
+    /*
     $sql = "SELECT * FROM {customfield_field} 
             WHERE categoryid $insql";
     $fieldIds = $DB->get_records_sql($sql, $inparams);
+    */
+    $sql = "SELECT * FROM {customfield_field} WHERE categoryid IN (".$categoryid.")";
+    $fieldIds = $DB->get_records_sql($sql);
     $fieldIdArray = array_keys($fieldIds);
     [$insql, $inparams] = $DB->get_in_or_equal($fieldIdArray);
     $sql = "SELECT instanceid 
             FROM {customfield_data} 
-            WHERE fieldid $insql 
+            WHERE intvalue=1 AND fieldid $insql 
             GROUP BY instanceid";
     $raws = $DB->get_records_sql($sql, $inparams);
     $courseids = [];

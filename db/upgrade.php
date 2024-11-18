@@ -35,7 +35,7 @@ function xmldb_local_courselist_upgrade($oldversion) {
     if ($oldversion < 2024101109) { // Replace with your new version number.
         // Define the capability.
         $capability = 'local/courselist:view';
-
+        
         // Ensure that the capability is defined.
         if (!$DB->record_exists('capabilities', ['name' => $capability])) {
             // Add the capability if it does not exist.
@@ -72,4 +72,5 @@ function xmldb_local_courselist_upgrade($oldversion) {
         // Mark the plugin as upgraded to the new version.
         upgrade_plugin_savepoint(true, 2024101109, 'local', 'courselist');
     }
+    return true;
 }
