@@ -55,7 +55,13 @@ function local_courselist_getcoursebycustomfield($fieldid)
                 AND fieldid = :fieldid";
     $subquery = $DB->get_records_sql($sql, ['fieldid' => $fieldid]);
     $instanceids = array_keys($subquery);
-    return $DB->get_records_list('course', 'id', $instanceids, 'fullname ASC');
+    $rows = $DB->get_records_list('course', 'id', $instanceids, 'fullname ASC');
+    foreach($rows as $k => $row){
+        if($row->visible <= 0){
+            unset($rows[$k]);
+        }
+    }
+    return $rows;
 }
 
 /**
@@ -119,7 +125,7 @@ function local_courselist_getcoursebykey($key, $categoryid)
         ]
     );
     */
-    $raws = $DB->get_records_sql("SELECT * FROM {course} WHERE fullname like '%" . $key . "%'");
+    $raws = $DB->get_records_sql("SELECT * FROM {course} WHERE visible=1 AND fullname like '%" . $key . "%'");
     foreach ($raws as $k => $raw) {
         if (!in_array($raw->id, $courseids)) {
             unset($raws[$k]);
