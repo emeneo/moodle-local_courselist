@@ -47,3 +47,6 @@ $string['menuname'] = 'Courselist';
 $string['add'] = 'Add';
 $string['courselist:view'] = ' No permission to view';
 $string['courselist:manage'] = ' No permission';
+$string['defaultappearance'] = 'Default appearance';
+$string['dont_display_any_courses_until_user_selects_a_course_list_category'] = 'Don’t display any courses until user selects a course list category';
+$string['display_course_of_first_course_list_category'] = 'Display courses of first course list category';

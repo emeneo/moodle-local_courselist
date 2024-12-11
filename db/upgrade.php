@@ -72,5 +72,15 @@ function xmldb_local_courselist_upgrade($oldversion) {
         // Mark the plugin as upgraded to the new version.
         upgrade_plugin_savepoint(true, 2024101109, 'local', 'courselist');
     }
+
+    if ($oldversion < 2024120404) {
+        $dbman = $DB->get_manager();
+        $table = new xmldb_table('local_courselist');
+        $field = new xmldb_field('defaultappearance', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 2, 'categories');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        upgrade_plugin_savepoint(true, 2024120404, 'local', 'courselist');
+    }
     return true;
 }

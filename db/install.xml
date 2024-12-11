@@ -9,6 +9,7 @@
           <FIELD NAME="enddate" TYPE="int" LENGTH="10" NOTNULL="false" />  
           <FIELD NAME="summary" TYPE="text" NOTNULL="false" />  
           <FIELD NAME="categories" TYPE="char" LENGTH="128" NOTNULL="false" />  
+          <FIELD NAME="defaultappearance" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="2" />  
         </FIELDS>
         <KEYS>
           <KEY NAME="primary" TYPE="primary" FIELDS="id" />

@@ -39,7 +39,7 @@ function local_courselist_getcustomfieldcategories()
 function local_courselist_getcustomfield($cateid)
 {
     global $DB;
-    $raws = $DB->get_records('customfield_field', ['categoryid' => $cateid], 'sortorder ASC', 'id,name,shortname,description');
+    $raws = $DB->get_records('customfield_field', ['categoryid' => $cateid], 'sortorder ASC', 'id,name,shortname,description,type,configdata');
     return $raws;
 }
 
@@ -56,8 +56,8 @@ function local_courselist_getcoursebycustomfield($fieldid)
     $subquery = $DB->get_records_sql($sql, ['fieldid' => $fieldid]);
     $instanceids = array_keys($subquery);
     $rows = $DB->get_records_list('course', 'id', $instanceids, 'fullname ASC');
-    foreach($rows as $k => $row){
-        if($row->visible <= 0){
+    foreach ($rows as $k => $row) {
+        if ($row->visible <= 0) {
             unset($rows[$k]);
         }
     }
@@ -103,7 +103,7 @@ function local_courselist_getcoursebykey($key, $categoryid)
             WHERE categoryid $insql";
     $fieldIds = $DB->get_records_sql($sql, $inparams);
     */
-    $sql = "SELECT * FROM {customfield_field} WHERE categoryid IN (".$categoryid.")";
+    $sql = "SELECT * FROM {customfield_field} WHERE categoryid IN (" . $categoryid . ")";
     $fieldIds = $DB->get_records_sql($sql);
     $fieldIdArray = array_keys($fieldIds);
     [$insql, $inparams] = $DB->get_in_or_equal($fieldIdArray);
@@ -144,4 +144,31 @@ function local_courselist_getcoursebykey($key, $categoryid)
         $raws[$k]->fieldid = $fieldids;
     }
     return $raws;
+}
+
+/**
+ * get course image by itemid
+ */
+function local_courselist_getcourseimagebykey($itemid)
+{
+    global $DB;
+    $fileUrl = '';
+    $sql = "SELECT * FROM {files} WHERE itemid = :itemid and filename<>'.'";
+    $rows = $DB->get_records_sql($sql, ['itemid' => $itemid]);
+    foreach ($rows as $row) {
+        if ($row->filesize > 0) {
+            $fs = get_file_storage();
+            $file = $fs->get_file_by_id($row->id);
+            $fileUrl = moodle_url::make_pluginfile_url(
+                $file->get_contextid(),
+                $file->get_component(),
+                $file->get_filearea(),
+                $file->get_itemid(),
+                $file->get_filepath(),
+                $file->get_filename()
+            );
+            $fileUrl = str_replace("pluginfile","draftfile",$fileUrl);
+        }
+    }
+    return $fileUrl;
 }

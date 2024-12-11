@@ -98,8 +98,21 @@ class local_courselist_edit_form extends moodleform {
             $mform->addElement('hidden', 'id', $courselist->id);
             $mform->setType('id', PARAM_INT);
         }
+
+        $mform->addElement('header', 'defaultappearance_radio', get_string('defaultappearance', 'local_courselist'));
+        $radio = array();
+        $radio[] = $mform->createElement('radio', 'defaultappearance', null, get_string('dont_display_any_courses_until_user_selects_a_course_list_category', 'local_courselist'), '1');
+        $radio[] = $mform->createElement('radio', 'defaultappearance', null, get_string('display_course_of_first_course_list_category', 'local_courselist'), '2');
+        $mform->addGroup($radio, 'separator', '', ' ', false);
+        if (!empty($courselist->id)) {
+            $mform->setDefault('defaultappearance', $courselist->defaultappearance);
+        }else{
+            $mform->setDefault('defaultappearance', '2');
+        }
+
         $mform->setExpanded('description');
         $mform->setExpanded('course_field_categories');
+        $mform->setExpanded('defaultappearance_radio');
         // When two elements we need a group.
         $buttonarray = array();
         $classarray = array('class' => 'form-submit');

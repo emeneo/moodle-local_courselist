@@ -55,6 +55,8 @@ if ($id) {
                 'name' => $field->name,
                 'shortname' => $field->shortname,
                 'description' => $field->description,
+                'type' => $field->type,
+                'configdata' => $field->configdata
             ];
             $outputdata->fields[] = $temp;
 
@@ -95,9 +97,22 @@ if ($id) {
     } else if ($fid) {
         $courses = local_courselist_getcoursebycustomfield($fid);
         if (isset($fields[$fid])) {
-            $outputdata->description = $fields[$fid]['description'];
+            $htmlDesc = '<div style="margin: 20px 0 20px 0;display: flex;" id="field_desc">'.$fields[$fid]['description'].'</div>';
+            if($fields[$fid]['type'] == 'courselist'){
+                $configdata = json_decode($fields[$fid]['configdata'],true);
+                if(isset($configdata['course_image']) && !empty($configdata['course_image'])){
+                    $imageFile = local_courselist_getcourseimagebykey($configdata['course_image']);
+                    if(!empty($imageFile)){
+                        $htmlDesc = '<div style="margin: 20px 0 20px 0;display: flex;" id="field_desc"><img src="'.$imageFile.'" style="width:30%;height: auto;margin-right: 10px;"><p>'.$fields[$fid]['description'].'</p></div>';
+                    }
+                }
+            }
+            $outputdata->description = $htmlDesc;
             $outputdata->fid = $fid;
         }
+    }
+    if($data->defaultappearance == 1){
+        $courses = [];
     }
     if (!empty($courses)) {
         $formatedcourse = [];
