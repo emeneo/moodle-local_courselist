@@ -65,6 +65,7 @@ if ($editform->is_cancelled()) {
     $insertdata->enddate = $data->enddate;
     $insertdata->summary = $data->summary_editor['text'];
     $insertdata->defaultappearance = $data->defaultappearance;
+    $insertdata->layout = $data->layout;
     $categories = [];
     foreach ($data->categories as $cate) {
         if ($cate > 0) {

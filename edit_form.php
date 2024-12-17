@@ -99,6 +99,18 @@ class local_courselist_edit_form extends moodleform {
             $mform->setType('id', PARAM_INT);
         }
 
+        $mform->addElement('header', 'layout_radio', get_string('layout', 'local_courselist'));
+        $radio = array();
+        $radio[] = $mform->createElement('radio', 'layout', null, get_string('layout_titles', 'local_courselist'), '2');
+        $radio[] = $mform->createElement('radio', 'layout', null, get_string('layout_cards', 'local_courselist'), '1');
+        $mform->addGroup($radio, 'separator', '', ' ', false);
+        if (!empty($courselist->id)) {
+            $mform->setDefault('layout', $courselist->layout);
+        }else{
+            $mform->setDefault('layout', '2');
+        }
+
+
         $mform->addElement('header', 'defaultappearance_radio', get_string('defaultappearance', 'local_courselist'));
         $radio = array();
         $radio[] = $mform->createElement('radio', 'defaultappearance', null, get_string('dont_display_any_courses_until_user_selects_a_course_list_category', 'local_courselist'), '1');
@@ -113,6 +125,7 @@ class local_courselist_edit_form extends moodleform {
         $mform->setExpanded('description');
         $mform->setExpanded('course_field_categories');
         $mform->setExpanded('defaultappearance_radio');
+        $mform->setExpanded('layout_radio');
         // When two elements we need a group.
         $buttonarray = array();
         $classarray = array('class' => 'form-submit');

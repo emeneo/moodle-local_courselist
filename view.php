@@ -32,7 +32,7 @@ $key = optional_param('key', '', PARAM_TEXT);
 require_login();
 //$context = context_course::instance(1);
 $context = context_system::instance();
-require_capability ('local/courselist:view', $context);
+require_capability('local/courselist:view', $context);
 $PAGE->set_context($context);
 $outputdata = new stdClass;
 
@@ -58,6 +58,19 @@ if ($id) {
                 'type' => $field->type,
                 'configdata' => $field->configdata
             ];
+            if ($data->layout == 1) {
+                $temp['layout'] = local_courselist_getrandcover();
+                $temp['layout_style'] = "background-size:cover;height:200px;";
+                if ($temp['type'] == 'courselist') {
+                    $configdata = json_decode($temp['configdata'], true);
+                    if (isset($configdata['course_image']) && !empty($configdata['course_image'])) {
+                        $imageFile = local_courselist_getcourseimagebykey($configdata['course_image']);
+                        if (!empty($imageFile)) {
+                            $temp['layout'] = $imageFile;
+                        }
+                    }
+                }
+            }
             $outputdata->fields[] = $temp;
 
             $fields[$field->id] = $temp;
@@ -97,7 +110,8 @@ if ($id) {
     } else if ($fid) {
         $courses = local_courselist_getcoursebycustomfield($fid);
         if (isset($fields[$fid])) {
-            $htmlDesc = '<div style="margin: 20px 0 20px 0;display: flex;" id="field_desc">'.$fields[$fid]['description'].'</div>';
+            $htmlDesc = '<div style="margin: 20px 0 20px 0;display: flex;" id="field_desc">' . $fields[$fid]['description'] . '</div>';
+            /*
             if($fields[$fid]['type'] == 'courselist'){
                 $configdata = json_decode($fields[$fid]['configdata'],true);
                 if(isset($configdata['course_image']) && !empty($configdata['course_image'])){
@@ -107,18 +121,22 @@ if ($id) {
                     }
                 }
             }
+            */
             $outputdata->description = $htmlDesc;
             $outputdata->fid = $fid;
         }
     }
-    if($data->defaultappearance == 1){
+    if ($data->defaultappearance == 1 && (!isset($_GET['fid']) || empty($_GET['fid']))) {
         $courses = [];
+    }else{
+        $data->defaultappearance = 2;
     }
+    $outputdata->defaultappearance = $data->defaultappearance;
     if (!empty($courses)) {
         $formatedcourse = [];
         $i = 0;
         foreach ($courses as $course) {
-            if($course->startdate > $data->startdate && $course->startdate < $data->enddate && $data->enddate > $data->startdate){
+            if ($course->startdate > $data->startdate && $course->startdate < $data->enddate && $data->enddate > $data->startdate) {
                 $course->startdate = date('Y-m-d H:i:s', $course->startdate);
                 $course->startdatelite = userdate(strtotime($course->startdate), '%d %B %Y');
                 $course->startdatelabel = get_string('startdate_lable', 'local_courselist') . ": ";
