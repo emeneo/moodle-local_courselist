@@ -8,6 +8,7 @@
 </div>
 <input type="hidden" id="current_fid" value="{{fid}}">
 <input type="hidden" id="searchurl" value="{{searchurl}}">
+<input type="hidden" id="searchkey" value="{{searchkey}}">
 <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 {{{description}}}
 <div class="courses" id="course-list">
@@ -34,10 +35,11 @@
     </div>
 <input type="hidden" id="defaultappearance" value="{{defaultappearance}}">
 {{#js}}
+    var search_key = document.getElementById('searchkey').value;
     var current_fid = document.getElementById('current_fid').value;
     var defaultappearance = document.getElementById('defaultappearance').value;
     
-    if(current_fid != '' && defaultappearance != 1){
+    if(current_fid != '' && defaultappearance != 1 && search_key == ''){
         document.getElementById('field_'+current_fid).style.backgroundColor = "#ccc";
     }
 
@@ -89,6 +91,13 @@
         }  
     });
     //}
+
+    window.onload = function() {
+        var targetElement = document.getElementById('course-list');
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
 
     window.addEventListener('DOMContentLoaded', function() {  
     var contentDiv = document.getElementById('field_desc');  

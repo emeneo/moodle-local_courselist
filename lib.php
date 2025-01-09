@@ -157,17 +157,12 @@ function local_courselist_getcourseimagebykey($itemid)
     $rows = $DB->get_records_sql($sql, ['itemid' => $itemid]);
     foreach ($rows as $row) {
         if ($row->filesize > 0) {
-            $fs = get_file_storage();
-            $file = $fs->get_file_by_id($row->id);
-            $fileUrl = moodle_url::make_pluginfile_url(
-                $file->get_contextid(),
-                $file->get_component(),
-                $file->get_filearea(),
-                $file->get_itemid(),
-                $file->get_filepath(),
-                $file->get_filename()
-            );
-            $fileUrl = str_replace("pluginfile","draftfile",$fileUrl);
+            $output = [
+                'hash' => $row->contenthash,
+                'mime' => $row->mimetype,
+                'filename' => $row->filename
+            ];
+            $fileUrl = new moodle_url("/local/courselist/show.php?d=" . base64_encode(json_encode($output)));
         }
     }
     return $fileUrl;

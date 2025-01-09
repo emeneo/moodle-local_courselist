@@ -1,41 +1,87 @@
-# Summary
-The plugin makes the following possibe: Creation of unlimited alternative course list pages (course catalogs, course menus), based on custom course fields (checkbox).
+.local_courselist_menu {
+    width: 100%;
+}
 
-# Installation
-The plugin can be installed by either uploading it via the moodle upload interface or manually by placing the unzipped package into the folder /local/
+.local_courselist_menu .local_courselist_selection {
+    display: inline-table;
+    margin: 0 5px;
+}
 
-# Setup a new course list
-## Create course list categories and add courses (Admin)
-1.	Go to Site Administration --> Courses --> Course custom fields
-URL: /course/customfield.php 
-2.	Klick on “Add a new category”
-3.	 Change the name of the newly created category (in the following we will use “Demo”, then click on “Add new custom field” (Type: “Checkbox”)
-4.	In the popup window enter:
-•	Field name 
-•	Short name
-•	Description 
-       Under common custom course fields settings, choose
-•	Locked=YES
-•	Visible to = Nobody 
-Repeat for all categories needed. 
-  
-## Create new course list page (Admin)
-1.	First go to Site Administration -> Plugins -> Local Plugins -> Manage course list
-        /local/courselist/manage.php)
-2.	Click on “Add new list”
- 
-3.	Enter:
-•	Start- and end date of course visibility
-•	Course list name 
-•	Description
-Finally select related custom course field categories.  Here we will select “Demo". 
- 
-You can visit the course list page by clicking on its name
- 
-## Let Courses appear in the Course list (Teacher, Admin)
-1 Go to the settings of the related course.
- 
-2 Select where your course should appear 
- 
-Important:
-In order for the max enrolments to appear on the course list page, the enrolment method “waitlist enrolment” or “student enrolment” has to be at the top of enrolment methods. 
+.local_courselist_description {
+    margin: 8px 0;
+}
+
+.local_courselist_check_uncheck_all {
+    margin-left: 4px;
+}
+
+.local_courselist_files_actions {
+    margin-top: 25px;
+}
+
+.local_courselist_files_action {
+    margin-top: 10px;
+}
+
+.local_courselist_table .c0 {
+    padding-left: 2px;
+    padding-right: 0;
+}
+
+.local_courselist_file_expired img {
+    width: 12px;
+    height: auto;
+    margin-left: -2px;
+}
+
+.local_courselist_table .local_courselist_filecheckbox {
+    margin: 0;
+}
+
+.local_courselist_study-box {
+      display: inline-block;
+    padding: 10px; /*GH: 20240612*/
+    background-color: #fff;
+    border: 1px solid #dee2e6; /*GH: 20240612*/
+    border-radius: .5rem;  /*GH: 20240612*/
+    font-family: Arial, sans-serif;
+    font-size: .9375rem; /*GH: 20240612*/
+    font-weight: bolder;  /*GH: 20240612*/
+    text-align: center;
+    margin: 1px; /*GH: 20240612*/
+    box-sizing: border-box;
+    text-decoration: none;
+    color: 0f6cbf;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.local_courselist_study-box:hover {
+    background-color: #f0f0f0;
+}
+
+.local_courselist_study-box:active {
+    background-color: #ccc;
+}
+
+.local_courselist_coursebox {
+    padding: 0.5rem;
+    border: 1px solid #dee2e6;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.local_courselist_coursename {
+    font-size: .9375rem;
+    font-weight: 400;
+    margin: 5px;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
