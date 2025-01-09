@@ -1,41 +1,31 @@
-# Summary
-The plugin makes the following possibe: Creation of unlimited alternative course list pages (course catalogs, course menus), based on custom course fields (checkbox).
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-# Installation
-The plugin can be installed by either uploading it via the moodle upload interface or manually by placing the unzipped package into the folder /local/
+/**
+ * version
+ *
+ * @package    local_courselist
+ * @copyright  (2024-) emeneo
+ * @link       emeneo.com
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
+ */
+defined('MOODLE_INTERNAL') || die();
 
-# Setup a new course list
-## Create course list categories and add courses (Admin)
-1.	Go to Site Administration --> Courses --> Course custom fields
-URL: /course/customfield.php 
-2.	Klick on “Add a new category”
-3.	 Change the name of the newly created category (in the following we will use “Demo”, then click on “Add new custom field” (Type: “Checkbox”)
-4.	In the popup window enter:
-•	Field name 
-•	Short name
-•	Description 
-       Under common custom course fields settings, choose
-•	Locked=YES
-•	Visible to = Nobody 
-Repeat for all categories needed. 
-  
-## Create new course list page (Admin)
-1.	First go to Site Administration -> Plugins -> Local Plugins -> Manage course list
-        /local/courselist/manage.php)
-2.	Click on “Add new list”
- 
-3.	Enter:
-•	Start- and end date of course visibility
-•	Course list name 
-•	Description
-Finally select related custom course field categories.  Here we will select “Demo". 
- 
-You can visit the course list page by clicking on its name
- 
-## Let Courses appear in the Course list (Teacher, Admin)
-1 Go to the settings of the related course.
- 
-2 Select where your course should appear 
- 
-Important:
-In order for the max enrolments to appear on the course list page, the enrolment method “waitlist enrolment” or “student enrolment” has to be at the top of enrolment methods. 
+$plugin->version   = 2025010800;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2022111800;        // Requires this Moodle version.
+$plugin->component = 'local_courselist';  // Full name of the plugin (used for diagnostics)
+$plugin->maturity  = MATURITY_STABLE;
+$plugin->release   = "Courselist plugin Version 4.4-h";
