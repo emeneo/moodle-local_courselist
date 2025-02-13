@@ -72,7 +72,6 @@ if ($id) {
                 }
             }
             $outputdata->fields[] = $temp;
-
             $fields[$field->id] = $temp;
             if (strlen($field->name) > $fieldslen) {
                 $fieldslen = strlen($field->name);
@@ -82,6 +81,9 @@ if ($id) {
     }
     if (!$fid && count($outputdata->fields) > 0) {
         $fid = $outputdata->fields[0]['id'];
+    }
+    if($fieldslen != 28){
+        $fieldslen = 28;
     }
     $outputdata->fieldboxwidth = $fieldslen * 9;
     $courses = [];

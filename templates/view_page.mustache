@@ -3,7 +3,7 @@
 <div style="margin:0 0 15px 0;"><input type="text" id="searchbox" size="30" placeholder="search" class="form-control withclear rounded"></div>
 <div>
     {{#fields}}
-     <a href="{{gourl}}&fid={{id}}" class="local_courselist_study-box" id="field_{{id}}" title="{{name}}" style="width:{{fieldboxwidth}}px;"><div style="background-image: url('{{layout}}');{{layout_style}}"></div><div>{{name}}</div></a>
+     <a href="{{gourl}}&fid={{id}}" class="local_courselist_study-box" id="field_{{id}}" title="{{name}}" style="width:{{fieldboxwidth}}px;"><div class="courselist-card-img" style="background-image: url('{{layout}}');"></div><div class="courselist-card-title">{{name}}</div></a>
     {{/fields}}
 </div>
 <input type="hidden" id="current_fid" value="{{fid}}">

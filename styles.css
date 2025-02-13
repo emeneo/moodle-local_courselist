@@ -39,20 +39,20 @@
 }
 
 .local_courselist_study-box {
-      display: inline-block;
-    padding: 10px; /*GH: 20240612*/
+    display: inline-block;
+	/*height: 12rem;*/ /*GH: 20250211*/
+    padding: 0px; /*GH: 20250120*/
     background-color: #fff;
     border: 1px solid #dee2e6; /*GH: 20240612*/
     border-radius: .5rem;  /*GH: 20240612*/
     font-family: Arial, sans-serif;
     font-size: .9375rem; /*GH: 20240612*/
-    font-weight: bolder;  /*GH: 20240612*/
+    font-weight: lighter;  /*GH: 20240612*/
     text-align: center;
     margin: 1px; /*GH: 20240612*/
     box-sizing: border-box;
     text-decoration: none;
     color: 0f6cbf;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; 
 }
@@ -84,4 +84,23 @@
 a {
     text-decoration: none;
     color: inherit;
+}
+.courselist-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: .5rem;
+}
+.courselist-card-img {
+    background-size:cover;
+	height:6rem; /*GH: 20250211*/
+}
+.courselist-card-title {
+    margin: 5px 15px 5px 15px; /*GH: 20250211*/
+    word-break: break-all;
 }
