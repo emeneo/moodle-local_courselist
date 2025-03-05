@@ -28,22 +28,31 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
     'local/courselist:view' => [
-        'riskbitmask' => RISK_XSS,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_COURSE,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'manager' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
+            'authenticateduser' => CAP_ALLOW, // Allow all logged-in users.
+            'manager' => CAP_ALLOW, // Allow managers by default.
+            'coursecreator' => CAP_ALLOW, // Allow course creators by default.
+            'editingteacher' => CAP_ALLOW, // Allow editing teachers by default.
+            'teacher' => CAP_ALLOW, // Allow non-editing teachers by default.
+            'student' => CAP_ALLOW, // Allow students by default.
+            'guest' => CAP_PREVENT, // Prevent guests by default.
+            'frontpage' => CAP_ALLOW, // Allow frontpage users by default. 
         ],
     ],
     'local/courselist:manage' => [
         'riskbitmask' => RISK_XSS,
         'captype' => 'write',
-        'contextlevel' => CONTEXT_COURSE,
+        'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'manager' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
+            'authenticateduser' => CAP_PREVENT, // Allow all logged-in users.
+            'manager' => CAP_ALLOW, // Allow managers by default.
+            'editingteacher' => CAP_PREVENT, // Allow editing teachers by default.
+            'teacher' => CAP_PREVENT, // Allow non-editing teachers by default.
+            'student' => CAP_PREVENT, // Allow students by default.
+            'guest' => CAP_PREVENT, // Prevent guests by default.
+            'frontpage' => CAP_PREVENT, // Allow frontpage users by default.
         ],
     ],
 ];

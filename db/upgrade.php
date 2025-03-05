@@ -92,5 +92,24 @@ function xmldb_local_courselist_upgrade($oldversion) {
         }
         upgrade_plugin_savepoint(true, 2024121200, 'local', 'courselist');
     }
+
+// Fix layout column to allow NULL and captype to 'read' for existing installs
+    if ($oldversion < 2025030108) {
+        // Fix layout column
+        $table = new xmldb_table('local_courselist');
+        $field = new xmldb_field('layout', XMLDB_TYPE_INTEGER, '10', null, null, null, '2', 'defaultappearance');
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->change_field_notnull($table, $field); // Makes it nullable
+            $dbman->change_field_default($table, $field); // Ensures default is 2
+        }
+
+        // Update the capabilities defined in db/access.php.
+        update_capabilities('local_courselist');
+
+        // Log a message to indicate the update.
+        mtrace("Updated capabilities for local_courselist.");
+
+        upgrade_plugin_savepoint(true, 2025030108, 'local', 'courselist');
+    }
     return true;
 }
