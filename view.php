@@ -20,7 +20,7 @@
  * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(dirname(__FILE__) . '/../../config.php');
@@ -30,7 +30,6 @@ $id = optional_param('id', 0, PARAM_INT);
 $fid = optional_param('fid', 0, PARAM_INT);
 $key = optional_param('key', '', PARAM_TEXT);
 require_login();
-//$context = context_course::instance(1);
 $context = context_system::instance();
 require_capability('local/courselist:view', $context);
 $PAGE->set_context($context);
@@ -41,13 +40,15 @@ if ($id) {
     (isset($data->name)) ? $outputdata->name = $data->name : $outputdata->name = "";
     (isset($data->summary)) ? $outputdata->summary = $data->summary : $outputdata->summary = "";
 
-
     (isset($data->categories)) ? $usedcategories = explode(",", $data->categories) : $usedcategories = [];
     $i = 0;
     $fields = [];
     $fieldslen = 0;
-    foreach ($usedcategories as $cateid) {
-        $coursefields = local_courselist_getcustomfield($cateid);
+
+    // Single batched query for all categories
+    if (!empty($usedcategories)) {
+        $categoryids = implode(',', array_map('intval', $usedcategories));
+        $coursefields = $DB->get_records_sql("SELECT * FROM {customfield_field} WHERE categoryid IN ($categoryids)");
         $outputdata->fields = [];
         foreach ($coursefields as $field) {
             $temp = [
@@ -79,10 +80,11 @@ if ($id) {
             $i++;
         }
     }
+
     if (!$fid && count($outputdata->fields) > 0) {
         $fid = $outputdata->fields[0]['id'];
     }
-    if($fieldslen != 28){
+    if ($fieldslen != 28) {
         $fieldslen = 28;
     }
     $outputdata->fieldboxwidth = $fieldslen * 9;
@@ -113,7 +115,7 @@ if ($id) {
     } else if ($fid) {
         $courses = local_courselist_getcoursebycustomfield($fid);
         if (isset($fields[$fid])) {
-            $htmlDesc = '<div style="margin: 20px 0 20px 0;display: flex;" id="field_desc">' . $fields[$fid]['description'] . '</div>';
+           $htmlDesc = '<div style="margin: 20px 0 20px 0;display: flex;" id="field_desc">' . $fields[$fid]['description'] . '</div>';
             /*
             if($fields[$fid]['type'] == 'courselist'){
                 $configdata = json_decode($fields[$fid]['configdata'],true);
@@ -132,7 +134,7 @@ if ($id) {
     if ($data->defaultappearance == 1 && (!isset($_GET['fid']) || empty($_GET['fid'])) && empty($key)) {
         $courses = [];
         $outputdata->description = '';
-    }else{
+    } else {
         $data->defaultappearance = 2;
     }
     $outputdata->defaultappearance = $data->defaultappearance;
