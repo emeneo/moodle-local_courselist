@@ -20,12 +20,12 @@
  * @package    local_courselist
  * @copyright  (2024-) emeneo
  * @link       emeneo.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2025030109;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2025030110;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2022111800;        // Requires this Moodle version.
 $plugin->component = 'local_courselist';  // Full name of the plugin (used for diagnostics)
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = "Courselist plugin Version 4.5-b";
+$plugin->release   = "Courselist plugin Version 4.5-c";
