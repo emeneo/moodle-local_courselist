@@ -35,6 +35,7 @@ require_capability('local/courselist:view', $context);
 $PAGE->set_context($context);
 $outputdata = new stdClass;
 
+$cache = cache::make('local_courselist', 'somedata');
 if ($id) {
     $data = $DB->get_record('local_courselist', ['id' => $id]);
     (isset($data->name)) ? $outputdata->name = $data->name : $outputdata->name = "";
@@ -48,7 +49,11 @@ if ($id) {
     // Single batched query for all categories
     if (!empty($usedcategories)) {
         $categoryids = implode(',', array_map('intval', $usedcategories));
-        $coursefields = $DB->get_records_sql("SELECT * FROM {customfield_field} WHERE categoryid IN ($categoryids)");
+        $coursefields = @unserialize($cache->get('usedcategories:'.$usedcategories));
+        if(!$coursefields){
+            $coursefields = $DB->get_records_sql("SELECT * FROM {customfield_field} WHERE categoryid IN ($categoryids)");
+            $cache->set('usedcategories:'.$usedcategories, serialize($coursefields), 600);
+        }
         $outputdata->fields = [];
         foreach ($coursefields as $field) {
             $temp = [
@@ -115,7 +120,7 @@ if ($id) {
     } else if ($fid) {
         $courses = local_courselist_getcoursebycustomfield($fid);
         if (isset($fields[$fid])) {
-           $htmlDesc = '<div style="margin: 20px 0 20px 0;display: flex;" id="field_desc">' . $fields[$fid]['description'] . '</div>';
+            $htmlDesc = '<div style="margin: 20px 0 20px 0;display: flex;" id="field_desc">' . $fields[$fid]['description'] . '</div>';
             /*
             if($fields[$fid]['type'] == 'courselist'){
                 $configdata = json_decode($fields[$fid]['configdata'],true);
@@ -159,6 +164,7 @@ if ($id) {
     $outputdata->enrolurl = new moodle_url("/enrol/index.php");
     $outputdata->searchurl = new moodle_url("/local/courselist/view.php?id=" . $id);
     $outputdata->searchkey = $key;
+    //$cache->set('outputdata:'.$id, serialize($outputdata), 600);
 }
 $url = new moodle_url("/local/courselist");
 $PAGE->set_url($url);

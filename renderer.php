@@ -55,7 +55,7 @@ class local_courselist_renderer extends plugin_renderer_base {
         global $USER;
         $usercontext = context_user::instance($USER->id);
         $outputdata->gourl = $page->url . "/view.php?id=" . $outputdata->id;
-        if (isset($outputdata->description)) {
+        if (isset($outputdata->description)&&isset($outputdata->fid)) {
             $outputdata->description = file_rewrite_pluginfile_urls($outputdata->description, 'pluginfile.php', 1, 'core_customfield', 'description', $outputdata->fid);
         }
         if (!empty($outputdata->courses)) {
