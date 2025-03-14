@@ -49,10 +49,10 @@ if ($id) {
     // Single batched query for all categories
     if (!empty($usedcategories)) {
         $categoryids = implode(',', array_map('intval', $usedcategories));
-        $coursefields = @unserialize($cache->get('usedcategories:'.$usedcategories));
-        if(!$coursefields){
+        $coursefields = @unserialize($cache->get('usedcategories:' . $usedcategories));
+        if (!$coursefields) {
             $coursefields = $DB->get_records_sql("SELECT * FROM {customfield_field} WHERE categoryid IN ($categoryids)");
-            $cache->set('usedcategories:'.$usedcategories, serialize($coursefields), 600);
+            $cache->set('usedcategories:' . $usedcategories, serialize($coursefields), 600);
         }
         $outputdata->fields = [];
         foreach ($coursefields as $field) {
@@ -144,18 +144,22 @@ if ($id) {
     }
     $outputdata->defaultappearance = $data->defaultappearance;
     if (!empty($courses)) {
-        $formatedcourse = [];
-        $i = 0;
-        foreach ($courses as $course) {
-            if ($course->startdate > $data->startdate && $course->startdate < $data->enddate && $data->enddate > $data->startdate) {
-                $course->startdate = date('Y-m-d H:i:s', $course->startdate);
-                $course->startdatelite = userdate(strtotime($course->startdate), '%d %B %Y');
-                $course->startdatelabel = get_string('startdate_lable', 'local_courselist') . ": ";
-                $course->enrolseatslabel = get_string('free_seats', 'local_courselist') . ": ";
-                $course->enrolseats = local_courselist_getfreeseats($course->id);
-                $formatedcourse[$i] = $course;
-                $i++;
+        $formatedcourse = @unserialize($cache->get('formatedcourse:' . $fid));
+        if (!$formatedcourse) {
+            $formatedcourse = [];
+            $i = 0;
+            foreach ($courses as $course) {
+                if ($course->startdate > $data->startdate && $course->startdate < $data->enddate && $data->enddate > $data->startdate) {
+                    $course->startdate = date('Y-m-d H:i:s', $course->startdate);
+                    $course->startdatelite = userdate(strtotime($course->startdate), '%d %B %Y');
+                    $course->startdatelabel = get_string('startdate_lable', 'local_courselist') . ": ";
+                    $course->enrolseatslabel = get_string('free_seats', 'local_courselist') . ": ";
+                    $course->enrolseats = local_courselist_getfreeseats($course->id);
+                    $formatedcourse[$i] = $course;
+                    $i++;
+                }
             }
+            $cache->set('formatedcourse:' . $fid, serialize($formatedcourse), 600);
         }
         $outputdata->courses = $formatedcourse;
     }
