@@ -71,7 +71,7 @@ if ($id) {
                     $configdata = json_decode($temp['configdata'], true);
                     if (isset($configdata['course_image']) && !empty($configdata['course_image'])) {
                         $imageFile = local_courselist_getcourseimagebykey($configdata['course_image']);
-                        $imageFile = '';
+                        //$imageFile = '';
                         if (!empty($imageFile)) {
                             $temp['layout'] = $imageFile;
                         }
