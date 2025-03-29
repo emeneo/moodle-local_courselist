@@ -31,14 +31,12 @@ $capabilities = [
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'authenticateduser' => CAP_ALLOW, // Allow all logged-in users.
-            'manager' => CAP_ALLOW, // Allow managers by default.
-            'coursecreator' => CAP_ALLOW, // Allow course creators by default.
-            'editingteacher' => CAP_ALLOW, // Allow editing teachers by default.
-            'teacher' => CAP_ALLOW, // Allow non-editing teachers by default.
-            'student' => CAP_ALLOW, // Allow students by default.
-            'guest' => CAP_PREVENT, // Prevent guests by default.
-            'frontpage' => CAP_ALLOW, // Allow frontpage users by default. 
+            'manager' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
+            'student' => CAP_ALLOW,
+            'guest' => CAP_PREVENT,
         ],
     ],
     'local/courselist:manage' => [
@@ -46,15 +44,11 @@ $capabilities = [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'authenticateduser' => CAP_PREVENT, // Allow all logged-in users.
-            'manager' => CAP_ALLOW, // Allow managers by default.
-            'editingteacher' => CAP_PREVENT, // Allow editing teachers by default.
-            'teacher' => CAP_PREVENT, // Allow non-editing teachers by default.
-            'student' => CAP_PREVENT, // Allow students by default.
-            'guest' => CAP_PREVENT, // Prevent guests by default.
-            'frontpage' => CAP_PREVENT, // Allow frontpage users by default.
+            'manager' => CAP_ALLOW,
+            'editingteacher' => CAP_PREVENT,
+            'teacher' => CAP_PREVENT,
+            'student' => CAP_PREVENT,
+            'guest' => CAP_PREVENT,
         ],
     ],
 ];
-
-
