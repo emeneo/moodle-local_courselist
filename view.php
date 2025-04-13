@@ -35,7 +35,7 @@ require_capability('local/courselist:view', $context);
 $PAGE->set_context($context);
 $outputdata = new stdClass;
 
-$cache = cache::make('local_courselist', 'somedata');
+//$cache = cache::make('local_courselist', 'somedata');
 if ($id) {
     $data = $DB->get_record('local_courselist', ['id' => $id]);
     (isset($data->name)) ? $outputdata->name = $data->name : $outputdata->name = "";
@@ -49,11 +49,14 @@ if ($id) {
     // Single batched query for all categories
     if (!empty($usedcategories)) {
         $categoryids = implode(',', array_map('intval', $usedcategories));
+        /*
         $coursefields = @unserialize($cache->get('usedcategories:' . $usedcategories));
         if (!$coursefields) {
             $coursefields = $DB->get_records_sql("SELECT * FROM {customfield_field} WHERE categoryid IN ($categoryids)");
             $cache->set('usedcategories:' . $usedcategories, serialize($coursefields), 600);
         }
+        */
+        $coursefields = $DB->get_records_sql("SELECT * FROM {customfield_field} WHERE categoryid IN ($categoryids)");
         $outputdata->fields = [];
         foreach ($coursefields as $field) {
             $temp = [
@@ -145,8 +148,8 @@ if ($id) {
     }
     $outputdata->defaultappearance = $data->defaultappearance;
     if (!empty($courses)) {
-        $formatedcourse = @unserialize($cache->get('formatedcourse:' . $fid));
-        if (!$formatedcourse) {
+        //$formatedcourse = @unserialize($cache->get('formatedcourse:' . $fid));
+        //if (!$formatedcourse) {
             $formatedcourse = [];
             $i = 0;
             foreach ($courses as $course) {
@@ -160,8 +163,8 @@ if ($id) {
                     $i++;
                 }
             }
-            $cache->set('formatedcourse:' . $fid, serialize($formatedcourse), 600);
-        }
+            //$cache->set('formatedcourse:' . $fid, serialize($formatedcourse), 600);
+        //}
         $outputdata->courses = $formatedcourse;
     }
     $outputdata->id = $id;
